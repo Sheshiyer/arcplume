@@ -1,112 +1,103 @@
 <div align="center">
 
-# 🪶 Arcplume
+# 🪽 Arcplume
 
-**Hardened skill for running Grok through your locally signed-in X account** using cookie credentials (`AUTH_TOKEN` + `CT0`) with strict preflight checks.
+**Run Grok through your local signed-in X session** with hardened cookie auth (`AUTH_TOKEN` + `CT0`), strict preflight checks, and browser-first execution.
 
 ![License](https://img.shields.io/github/license/Sheshiyer/arcplume?style=flat-square)
 ![Last Commit](https://img.shields.io/github/last-commit/Sheshiyer/arcplume?style=flat-square)
 ![Repo Size](https://img.shields.io/github/repo-size/Sheshiyer/arcplume?style=flat-square)
-
-</div>
-
----
-
-<div align="center">
+![Release](https://img.shields.io/github/v/release/Sheshiyer/arcplume?style=flat-square)
 
 <img src="./icon.png" alt="Arcplume icon" width="128" />
 
 </div>
 
-## Why this exists
+---
 
-Most Grok automations confuse API mode and signed-account mode. This skill makes the session-backed workflow explicit and safe:
+## Why Arcplume
 
-- ✅ Cookie/session-first execution
-- ✅ Preflight auth validation before any task
-- ✅ Browser-first path for account-bound behavior
-- ✅ Strict no-secret-leak policy
+Most Grok automations blur two very different modes:
+- **Cookie-backed signed-account mode** (what users actually asked for)
+- **API-key mode** (`XAI_API_KEY`)
+
+Arcplume keeps that boundary explicit and safe.
+
+### Core guarantees
+- ✅ Cookie/session-first behavior
+- ✅ Mandatory `bird whoami` preflight before execution
+- ✅ Browser-first flow for account-bound tasks
+- ✅ No secret echo in output/logs
+- ✅ No silent fallback from cookie mode to API mode
 
 ---
 
 ## Install
 
-Copy this skill into your Craft workspace skills folder:
-
 ```bash
 mkdir -p ~/.craft-agent/workspaces/my-workspace/skills/arcplume
 cp SKILL.md ~/.craft-agent/workspaces/my-workspace/skills/arcplume/SKILL.md
-```
-
-Then validate:
-
-```bash
 craft-agent skill validate arcplume
 ```
 
 ---
 
-## Credentials (safe loading order)
+## Credential resolution order
 
-1. Environment variables (`AUTH_TOKEN`, `CT0`)
+Arcplume loads credentials in this order:
+
+1. Process env (`AUTH_TOKEN`, `CT0`)
 2. `~/.claude/.env`
 3. `~/.config/bird/config.json5`
 
-The skill never prints raw token values.
+Raw token values are never printed.
 
 ---
 
-## Preflight check
+## Quick preflight
 
 ```bash
 scripts/preflight.sh
 ```
 
-Expected result: `bird whoami` succeeds with cookie credentials.
+Expected result: cookie-authenticated `bird whoami` success.
 
 ---
 
-## Rebrand exploration (May 2026)
+## Repeatable endpoint tests
 
-Fresh icon/name concepts live in [`branding/rebrand-2026-05/icons`](./branding/rebrand-2026-05/icons).
-Current `icon.png` is set to the **Arcplume** concept for review.
+### Video endpoint smoke test
 
-## Security hardening
-
-See [SECURITY.md](./SECURITY.md) for:
-- threat model
-- secret handling rules
-- incident response checklist
-
----
-
-## Repo layout
-
-```text
-.
-├── SKILL.md
-├── README.md
-├── SECURITY.md
-├── scripts/
-│   ├── load-cookies.sh
-│   └── preflight.sh
-└── .github/workflows/
-    └── validate-skill.yml
+```bash
+scripts/test-video.sh \
+  --prompt "Arcplume logo reveal, dark bg, cyan-violet glow, no text" \
+  --duration 5 \
+  --out ./arcplume-teaser.mp4
 ```
 
 ---
 
-## Publish to skills.sh checklist
+## Security
 
-- [x] Valid SKILL frontmatter
-- [x] Clear trigger conditions
-- [x] Safety/constraints documented
-- [x] Security guidance included
-- [x] Basic CI validation workflow
-
+Read [SECURITY.md](./SECURITY.md) for threat model, secret handling rules, and incident response guidance.
 
 ---
 
-## Brand update
+## Branding assets
 
-This project was re-imagined and renamed from **Grok Account Bridge** to **Arcplume**.
+Rebrand concepts and social teaser notes:
+- [branding/rebrand-2026-05/icons](./branding/rebrand-2026-05/icons)
+- [branding/rebrand-2026-05/teasers/README.md](./branding/rebrand-2026-05/teasers/README.md)
+
+---
+
+## skills.sh publish checklist
+
+- [x] Valid frontmatter (`name`, `description`)
+- [x] Hardened auth and safety constraints
+- [x] Helper scripts for preflight and endpoint tests
+- [x] Repo-level CI validation
+- [x] Icon + brand assets
+- [x] Release metadata prepared
+
+See [skills-sh-submission.md](./skills-sh-submission.md) for copy-paste listing metadata.

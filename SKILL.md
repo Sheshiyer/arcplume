@@ -1,13 +1,13 @@
 ---
 name: arcplume
-displayName: "🪶 Arcplume — Local Signed-In X Session"
+displayName: "🪽 Arcplume — Local Signed-In X Session"
 description: Arcplume runs Grok through a locally signed-in X account using cookie credentials (AUTH_TOKEN/CT0) with strict preflight validation, secret-safe handling, and browser-first execution.
 emoji: "🪽"
 homepage: https://skills.sh
 license: MIT
 ---
 
-# 🪶 Arcplume — Local Signed-In X Session
+# 🪽 Arcplume — Local Signed-In X Session
 
 Use this skill when the user explicitly wants **Grok via their local signed-in X account** and cookie-backed auth context.
 
