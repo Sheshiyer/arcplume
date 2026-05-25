@@ -2,12 +2,11 @@
 
 # 🪽 Arcplume
 
-**Run Grok through your local signed-in X session** with hardened cookie auth (`AUTH_TOKEN` + `CT0`), strict preflight checks, and browser-first execution.
+**Reliable Grok automation through your signed-in X account — with strict auth checks and zero secret leakage.**
 
+![Release](https://img.shields.io/github/v/release/Sheshiyer/arcplume?style=flat-square)
 ![License](https://img.shields.io/github/license/Sheshiyer/arcplume?style=flat-square)
 ![Last Commit](https://img.shields.io/github/last-commit/Sheshiyer/arcplume?style=flat-square)
-![Repo Size](https://img.shields.io/github/repo-size/Sheshiyer/arcplume?style=flat-square)
-![Release](https://img.shields.io/github/v/release/Sheshiyer/arcplume?style=flat-square)
 
 <img src="./icon.png" alt="Arcplume icon" width="128" />
 
@@ -15,20 +14,36 @@
 
 ---
 
-## Why Arcplume
+## The problem Arcplume solves
 
-Most Grok automations blur two very different modes:
-- **Cookie-backed signed-account mode** (what users actually asked for)
-- **API-key mode** (`XAI_API_KEY`)
+Most Grok workflows are fragile because they mix two different execution modes:
 
-Arcplume keeps that boundary explicit and safe.
+1. **Signed-account mode** (cookie/session-backed; what users often mean)
+2. **API mode** (`XAI_API_KEY`; a different contract)
 
-### Core guarantees
-- ✅ Cookie/session-first behavior
-- ✅ Mandatory `bird whoami` preflight before execution
-- ✅ Browser-first flow for account-bound tasks
-- ✅ No secret echo in output/logs
-- ✅ No silent fallback from cookie mode to API mode
+That confusion causes silent fallbacks, broken auth, and accidental secret exposure.
+
+**Arcplume fixes this with explicit boundaries, mandatory preflight, and safe defaults.**
+
+---
+
+## What Arcplume guarantees
+
+- ✅ **Cookie-first execution** using `AUTH_TOKEN` + `CT0`
+- ✅ **Mandatory identity check** (`bird whoami`) before real work
+- ✅ **Browser-first default** for account-bound Grok behavior
+- ✅ **No-secret output policy** (tokens never printed)
+- ✅ **No silent mode-switching** from cookie mode to API mode
+- ✅ **Clear failure remediation** when credentials are missing/expired
+
+---
+
+## Trust boundaries (important)
+
+| Mode | Trigger | Auth | Default? | Notes |
+|---|---|---|---|---|
+| Signed-account (cookie) | User asks for local/signed-in Grok | `AUTH_TOKEN` + `CT0` | **Yes** | Preferred for account-bound UI behavior |
+| API mode | User explicitly requests API | `XAI_API_KEY` | No | Never auto-selected from cookie mode |
 
 ---
 
@@ -44,60 +59,83 @@ craft-agent skill validate arcplume
 
 ## Credential resolution order
 
-Arcplume loads credentials in this order:
+Arcplume resolves credentials in this order:
 
-1. Process env (`AUTH_TOKEN`, `CT0`)
+1. Environment (`AUTH_TOKEN`, `CT0`)
 2. `~/.claude/.env`
 3. `~/.config/bird/config.json5`
 
-Raw token values are never printed.
+> Raw credential values are never echoed.
 
 ---
 
-## Quick preflight
+## Quick start
+
+### 1) Preflight (required)
 
 ```bash
 scripts/preflight.sh
 ```
 
-Expected result: cookie-authenticated `bird whoami` success.
+Expected: `bird whoami` succeeds.
 
----
-
-## Repeatable endpoint tests
-
-### Video endpoint smoke test
+### 2) Run a repeatable video endpoint test (optional)
 
 ```bash
 scripts/test-video.sh \
-  --prompt "Arcplume logo reveal, dark bg, cyan-violet glow, no text" \
+  --prompt "Arcplume logo reveal, dark background, cyan-violet glow, no text" \
   --duration 5 \
   --out ./arcplume-teaser.mp4
 ```
 
----
-
-## Security
-
-Read [SECURITY.md](./SECURITY.md) for threat model, secret handling rules, and incident response guidance.
+This validates async request flow (`pending` → `done`) and artifact download.
 
 ---
 
-## Branding assets
+## Security posture
 
-Rebrand concepts and social teaser notes:
-- [branding/rebrand-2026-05/icons](./branding/rebrand-2026-05/icons)
-- [branding/rebrand-2026-05/teasers/README.md](./branding/rebrand-2026-05/teasers/README.md)
+Arcplume is designed for least exposure:
+
+- No token logging
+- No secret persistence in generated artifacts
+- Deterministic preflight before execution
+- Confirmation before state-changing actions
+
+See [SECURITY.md](./SECURITY.md) for full threat model + incident response.
 
 ---
 
-## skills.sh publish checklist
+## Repository contents
 
-- [x] Valid frontmatter (`name`, `description`)
-- [x] Hardened auth and safety constraints
-- [x] Helper scripts for preflight and endpoint tests
-- [x] Repo-level CI validation
-- [x] Icon + brand assets
-- [x] Release metadata prepared
+```text
+.
+├── SKILL.md
+├── README.md
+├── SECURITY.md
+├── CHANGELOG.md
+├── scripts/
+│   ├── load-cookies.sh
+│   ├── preflight.sh
+│   └── test-video.sh
+├── icon.png
+└── .github/workflows/validate-skill.yml
+```
 
-See [skills-sh-submission.md](./skills-sh-submission.md) for copy-paste listing metadata.
+---
+
+## Release
+
+- Current stable: **[v1.0.0](https://github.com/Sheshiyer/arcplume/releases/tag/v1.0.0)**
+- Changelog: [CHANGELOG.md](./CHANGELOG.md)
+- skills.sh metadata: [skills-sh-submission.md](./skills-sh-submission.md)
+
+---
+
+## Brand assets
+
+- Icons: [branding/rebrand-2026-05/icons](./branding/rebrand-2026-05/icons)
+- Teaser notes: [branding/rebrand-2026-05/teasers/README.md](./branding/rebrand-2026-05/teasers/README.md)
+
+---
+
+Built for operators who care about reliability, auth clarity, and safe automation.
