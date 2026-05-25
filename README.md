@@ -8,8 +8,18 @@
 ![License](https://img.shields.io/github/license/Sheshiyer/arcplume?style=flat-square)
 ![Last Commit](https://img.shields.io/github/last-commit/Sheshiyer/arcplume?style=flat-square)
 
+<img src="./assets/readme/header.png" alt="Arcplume visual header" width="100%" />
+
 <img src="./icon.png" alt="Arcplume icon" width="128" />
 
+</div>
+
+---
+
+## Preview
+
+<div align="center">
+  <img src="./assets/readme/preview-card.png" alt="Arcplume social preview card" width="90%" />
 </div>
 
 ---
