@@ -12,14 +12,8 @@
 
 <img src="./icon.png" alt="Arcplume icon" width="128" />
 
-</div>
+<video src="./assets/readme/arcplume-logo-animation.mp4" controls loop muted playsinline width="90%"></video>
 
----
-
-## Preview
-
-<div align="center">
-  <img src="./assets/readme/preview-card.png" alt="Arcplume social preview card" width="90%" />
 </div>
 
 ---
