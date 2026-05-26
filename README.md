@@ -83,7 +83,19 @@ scripts/preflight.sh
 
 Expected: `bird whoami` succeeds.
 
-### 2) Run a repeatable video endpoint test (optional)
+### 2) Run diagnostics matrix (recommended)
+
+```bash
+scripts/doctor.sh
+```
+
+This prints a pass/fail matrix for:
+- key present
+- endpoint reachable
+- request accepted
+- poll status
+
+### 3) Run a repeatable video endpoint test (optional)
 
 ```bash
 scripts/test-video.sh \
@@ -120,6 +132,7 @@ See [SECURITY.md](./SECURITY.md) for full threat model + incident response.
 ├── scripts/
 │   ├── load-cookies.sh
 │   ├── preflight.sh
+│   ├── doctor.sh
 │   └── test-video.sh
 ├── icon.png
 └── .github/workflows/validate-skill.yml
